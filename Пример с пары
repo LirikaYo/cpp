@@ -1,0 +1,30 @@
+#include <iostream>
+
+class example {
+public: 
+	example() {
+		std::cout << "created object of example..." << std::endl;
+	}
+	~example() {
+		std::cout << "destroed object of example..." << std::endl;
+	}
+};
+
+void www() {
+	int x;
+	example q1;
+	std::cout << "x=";
+	std::cin >> x;
+	if (x == 0) throw("errrr...");
+	std::cout << "value of x=" << x << std::endl;
+}
+
+int main() {
+	try {
+		www();
+	}
+	catch (...) {
+		std::cout << "error..." << std::endl;
+	}
+	return 0;
+}
