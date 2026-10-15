@@ -1,0 +1,110 @@
+#include<iostream>
+#include<string>
+#include<locale>
+#include<cmath>
+
+using namespace std;
+
+template<typename example>
+void prover(example& x, string s) {
+	do {
+		cout << s;
+		cin >> x;
+
+		if (x <= 0) {
+			cout << "Введите корректные размеры: \n";
+		}
+	} while (x <= 0);
+}
+
+class triangle {
+private:
+    int id;
+	double side, height;
+public:
+	triangle() {
+		side = 0;
+		height = 0; // иницилизир начальное состояние объекта
+		id = 0;
+	}
+	triangle(double s, double h, int i) {
+		side = s;
+		height = h;
+		id = i; 
+	}
+	
+	void setRazm() {
+		prover(side, "Введите размер стороны: ");
+		prover(height, "Введите размер высоты: ");
+	}
+	
+    void setId(int new_id) {
+        id = new_id;
+    }
+
+    int getId() {
+        return id;
+    }
+
+	double poiskPlosh() {
+		return ((side * side) * sqrt(3)) / 4;
+	}
+
+	double poiskObem() {
+		return (side * side * height * sqrt(3)) / 12;
+	}
+
+	void printRazm() {
+		cout << "ID пирамиды: " << id << "\nДлина стороны: " << side << "\nДлина высоты: " << height << "\nПлощадь основания: " << poiskPlosh() << "\nОбъем: " << poiskObem() << endl;
+	}
+
+};
+
+triangle* chitaem(int& size) {
+	prover(size, "Введите число пирамид: ");
+	triangle* pyramids = new triangle[size];
+	for (int i = 0; i < size; i++) {
+        pyramids[i].setRazm(); 
+        pyramids[i].setId(i + 1); 
+    }
+	return pyramids;
+}
+
+void chtoBolshe(triangle* pyramids, int size) {
+	int maxPlosh = 0;
+	int maxObem = 0;
+	for (int i = 1; i < size; i++) {
+		if (pyramids[i].poiskPlosh() > pyramids[maxPlosh].poiskPlosh()) {
+			maxPlosh = i;
+		}
+		if (pyramids[i].poiskObem() > pyramids[maxObem].poiskObem()) {
+			maxObem = i;
+		}
+	}
+	 
+    cout << "Пирамида с максимальной площадью основания: " << pyramids[maxPlosh].poiskPlosh() << "\nID: ";
+    for (int i = 0; i < size; i++){
+        if (pyramids[i].poiskPlosh() == pyramids[maxPlosh].poiskPlosh()){
+            cout << pyramids[i].getId() << " ";
+        }
+    }
+    cout << endl;
+    cout << "Пирамида с максимальным объемом: " << pyramids[maxObem].poiskObem() << "\nID: ";
+    for (int i = 0; i < size; i++){
+        if (pyramids[i].poiskObem() == pyramids[maxObem].poiskObem()){
+            cout << pyramids[i].getId() << " ";
+        }
+    }
+}
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	int size = 0;
+	triangle* pyramids = chitaem(size);
+
+	chtoBolshe(pyramids, size);
+
+	delete[] pyramids;
+    pyramids = nullptr;
+	return 0;
+}
