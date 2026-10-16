@@ -4,155 +4,153 @@
 
 class vector {
 private:
-    const int size = 100;
-    int* data;
-    int tekysh_size;
+	int* data = nullptr;
+	int tekysh_size = 0;
 public:
-    vector(int x = 0) {
-        std::cout << "Введите размер массива не более 100: ";
-        std::cin >> x;
-        while (x <= 0 || x >= 100) {
-            std::cout << "Введите число еще раз: ";
-            std::cin >> x;
-        }
-        tekysh_size = x;
-        data = new int[tekysh_size];
-        for (int i = 0; i < tekysh_size; i++) {
-            data[i] = rand() % 50 + 1;
-        }
-    }
+	vector(int x = 0) {
+		std::cout << "Введите размер массива не более 100: ";
+		std::cin >> x;
+		while (x <= 0 || x >= 100) {
+			std::cout << "Введите число еще раз: ";
+			std::cin >> x;
+		}
+		tekysh_size = x;
+		data = new int[tekysh_size];
+		for (int i = 0; i < tekysh_size; i++) {
+			data[i] = rand() % 50 + 1;
+		}
+	}
 
-    int poisk(int index) {
-        if (index < 0 || index >= tekysh_size) {
-            throw "Введите существующий индекс...";
-        }
-        return data[index];
-    }
+	int poisk(int index) {
+		if (index < 0 || index >= tekysh_size) {
+			throw "Введите существующий индекс...";
+		}
+		return data[index];
+	}
 
-    void dobavlen() {
-        int kolvo;
-        std::cout << "Введите кол-во элементов которое хотите ввести: ";
-        std::cin >> kolvo;
-        if (tekysh_size + kolvo > size) {
-            throw "Вы ввели слишком много элементов...";
-        }
-        int* new_data = new int[tekysh_size + kolvo];
-        for (int i = 0; i < tekysh_size; i++) {
-            new_data[i] = data[i];
-        }
-        for (int i = 0; i < kolvo; i++) {
-            new_data[tekysh_size + i] = rand() % 50 + 1;
-        }
-        delete[] data;
-        data = nullptr;
-        data = new_data;
-        tekysh_size += kolvo;
-    }
+	void dobavlen() {
+		int kolvo;
+		std::cout << "Введите кол-во элементов которое хотите ввести: ";
+		std::cin >> kolvo;
+		if (tekysh_size + kolvo > 100) {
+			throw "Вы ввели слишком много элементов...";
+		}
+		int* new_data = new int[tekysh_size + kolvo];
+		for (int i = 0; i < tekysh_size; i++) {
+			new_data[i] = data[i];
+		}
+		for (int i = 0; i < kolvo; i++) {
+			new_data[tekysh_size + i] = rand() % 50 + 1;
+		}
+		delete[] data;
+		data = nullptr;
+		data = new_data;
+		tekysh_size += kolvo;
+	}
 
-    void ydalenie_nachala() {
-        if (tekysh_size == 0) {
-            throw "Элементов в массиве нет...";
-        }
-        int* new_data = new int[tekysh_size - 1];
-        for (int i = 0; i < tekysh_size - 1; i++) {
-            new_data[i] = data[i + 1];
-        }
-        delete[] data;
-        data = nullptr;
-        data = new_data;
-        tekysh_size--;
-    }
+	void ydalenie_nachala() {
+		if (tekysh_size == 0) {
+			throw "Элементов в массиве нет...";
+		}
+		int* new_data = new int[tekysh_size - 1];
+		for (int i = 0; i < tekysh_size - 1; i++) {
+			new_data[i] = data[i + 1];
+		}
+		delete[] data;
+		data = nullptr;
+		data = new_data;
+		tekysh_size--;
+	}
 
-    void ydalenie_konca() {
-        if (tekysh_size == 0) {
-            throw "Элементов в массиве нет...";
-        }
-        int* new_data = new int[tekysh_size - 1];
-        for (int i = 0; i < tekysh_size - 1; i++) {
-            new_data[i] = data[i];
-        }
-        delete[] data;
-        data = nullptr;
-        data = new_data;
-        tekysh_size--;
-    }
+	void ydalenie_konca() {
+		if (tekysh_size == 0) {
+			throw "Элементов в массиве нет...";
+		}
+		int* new_data = new int[tekysh_size - 1];
+		for (int i = 0; i < tekysh_size - 1; i++) {
+			new_data[i] = data[i];
+		}
+		delete[] data;
+		data = nullptr;
+		data = new_data;
+		tekysh_size--;
+	}
 
-    void vivod() {
-        std::cout << "Текущий массив: ";
-        for (int i = 0; i < tekysh_size; i++) {
-            std::cout << data[i] << " ";
-        }
-        std::cout << std::endl;
-    }
+	void vivod() {
+		std::cout << "Текущий массив: ";
+		for (int i = 0; i < tekysh_size; i++) {
+			std::cout << data[i] << " ";
+		}
+		std::cout << std::endl;
+	}
 
-    ~vector() {
-        delete[] data;
-        data = nullptr;
-    }
+	~vector() {
+		delete[] data;
+		data = nullptr;
+	}
 };
 
 void menu(vector& x) {
-    int menu;
-    do {
-        std::cout << "\n--- МЕНЮ ---" << std::endl;
-        std::cout << "1. Поиск по индексу" << std::endl;
-        std::cout << "2. Добавить элементы" << std::endl;
-        std::cout << "3. Удалить из начала" << std::endl;
-        std::cout << "4. Удалить из конца" << std::endl;
-        std::cout << "5. Вывести массив" << std::endl;
-        std::cout << "0. Выход" << std::endl;
-        std::cout << "Выберите действие: ";
-        std::cin >> menu;
+	int menu;
+	do {
+		std::cout << "\n--- МЕНЮ ---" << std::endl;
+		std::cout << "1. Поиск по индексу" << std::endl;
+		std::cout << "2. Добавить элементы" << std::endl;
+		std::cout << "3. Удалить из начала" << std::endl;
+		std::cout << "4. Удалить из конца" << std::endl;
+		std::cout << "5. Вывести массив" << std::endl;
+		std::cout << "0. Выход" << std::endl;
+		std::cout << "Выберите действие: ";
+		std::cin >> menu;
 
-        try {
-            switch (menu) {
-            case 1: {
-                int id;
-                std::cout << "Введите индекс: ";
-                std::cin >> id;
-                std::cout << "Элемент: " << x.poisk(id) << std::endl;
-                break;
-            }
-            case 2: {
-                x.dobavlen();
-                std::cout << "Элементы добавлены!" << std::endl;
-                break;
-            }
-            case 3: {
-                x.ydalenie_nachala();
-                std::cout << "Первый элемент удален!" << std::endl;
-                break;
-            }
-            case 4: {
-                x.ydalenie_konca();
-                std::cout << "Последний элемент удален!" << std::endl;
-                break;
-            }
-            case 5: {
-                x.vivod();
-                break;
-            }
-            case 0: {
-                std::cout << "Выход из меню..." << std::endl;
-                break;
-            }
-            default:
-                std::cout << "Неверный пункт меню!" << std::endl;
-                break;
-            }
-        }
-        catch (...) {
-            std::cout << "Ошибка..." << std::endl;
-        }
-    } while (menu != 0);
+		try {
+			switch (menu) {
+			case 1: {
+				int id;
+				std::cout << "Введите индекс: ";
+				std::cin >> id;
+				std::cout << "Элемент: " << x.poisk(id) << std::endl;
+				break;
+			}
+			case 2: {
+				x.dobavlen();
+				std::cout << "Элементы добавлены!" << std::endl;
+				break;
+			}
+			case 3: {
+				x.ydalenie_nachala();
+				std::cout << "Первый элемент удален!" << std::endl;
+				break;
+			}
+			case 4: {
+				x.ydalenie_konca();
+				std::cout << "Последний элемент удален!" << std::endl;
+				break;
+			}
+			case 5: {
+				x.vivod();
+				break;
+			}
+			case 0: {
+				std::cout << "Выход из меню..." << std::endl;
+				break;
+			}
+			default:
+				std::cout << "Неверный пункт меню!" << std::endl;
+				break;
+			}
+		}
+		catch (...) {
+			std::cout << "Ошибка..." << std::endl;
+		}
+	} while (menu != 0);
 }
 
 int main() {
-    setlocale(LC_ALL, "RU");
-    srand(time(NULL));
+	setlocale(LC_ALL, "RU");
+	srand(time(NULL));
+	vector x;
+	menu(x);
 
-    vector x;
-    menu(x);
-
-    return 0;
+	return 0;
 }
