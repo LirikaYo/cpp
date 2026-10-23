@@ -7,14 +7,11 @@ private:
 	int* data = nullptr;
 	int tekysh_size = 0;
 public:
-	vector(int x = 0) {
-		std::cout << "Введите размер массива не более 100: ";
-		std::cin >> x;
-		while (x <= 0 || x >= 100) {
-			std::cout << "Введите число еще раз: ";
-			std::cin >> x;
-		}
-		tekysh_size = x;
+	vector() {
+		do {
+			std::cout << "Введите размер массива от 1 до 100: ";
+			std::cin >> tekysh_size;
+		} while (tekysh_size <= 0 || tekysh_size >= 100);
 		data = new int[tekysh_size];
 		for (int i = 0; i < tekysh_size; i++) {
 			data[i] = rand() % 50 + 1;
@@ -140,8 +137,8 @@ void menu(vector& x) {
 				break;
 			}
 		}
-		catch (...) {
-			std::cout << "Ошибка..." << std::endl;
+		catch (const char* msg) {
+			std::cout << msg << std::endl;
 		}
 	} while (menu != 0);
 }
