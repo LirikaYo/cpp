@@ -1,0 +1,40 @@
+#include <iostream>
+#include <locale>
+#include <string>
+
+class triangle {
+private:
+	float a = 0, b = 0, c = 0;
+public:
+	template<typename example>
+	void vvod(example& x, std::string s) {
+		std::cout << s;
+		std::cin >> x;
+	}
+
+	template<typename example>
+	void vivod(example& x, std::string s) {
+		std::cout << s << x << std::endl;
+	}
+
+	triangle() {
+		vvod(a, "Введите сторону a:");
+		vvod(b, "Введите сторону b:");
+		vvod(c, "Введите сторону c:");
+	}
+	prover()
+	print() {
+		vivod(a, "Размер a: ");
+		vivod(b, "Размер b: ");
+		vivod(c, "Размер c: ");
+	}
+};
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	triangle t;
+	t.print();
+
+	return 0;
+}
