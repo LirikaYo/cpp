@@ -1,17 +1,19 @@
 #include <iostream>
 #include <locale>
 #include <string>
+#include <cmath>
+#include <cstdio>
 
-	template<typename example>
-	void vvod(example& x, std::string s) {
-		std::cout << s;
-		std::cin >> x;
-	}
+template<typename example>
+void vvod(example& x, std::string s) {
+	std::cout << s;
+	std::cin >> x;
+}
 
-	template<typename example>
-	void vivod(example& x, std::string s) {
-		std::cout << s << x << std::endl;
-	}
+template<typename example>
+void vivod(example& x, std::string s) {
+	std::cout << s << x << std::endl;
+}
 
 
 
@@ -20,21 +22,59 @@ private:
 	float a = 0, b = 0, c = 0;
 public:
 	triangle() {
-		vvod(a, "Введите сторону a:");
-		vvod(b, "Введите сторону b:");
-		vvod(c, "Введите сторону c:");
+		vvod(a, "Введите сторону a: ");
+		vvod(b, "Введите сторону b: ");
+		vvod(c, "Введите сторону c: ");
+		prover();
+		std::cout << "Объект создан." << std::endl;
+	}
+
+	triangle(float stor_a, float stor_b, float stor_c) {
+		a = stor_a;
+		b = stor_b;
+		c = stor_c;
+		prover();
 	}
 
 	void prover() {
-		if (a + b < c || a + c < b || c + b < a) {
-			throw "Треугольник не может быть создан.";
+		if (a <= 0 || b <= 0 || c <= 0) {
+			throw "Вы ввели не правильные числа.";
 		}
+		if (a + b <= c || a + c <= b || c + b <= a) {
+			throw "Треугольник не может быть создан.";
+		} 
 	}
+
+	operator float() const {
+		float p = (a + b + c) / 2;
+		float s = sqrt(p * (p - a) * (p - b) * (p - c));
+		return s;
+	}
+
+	operator std::string() const {
+		char* stroka = new char[100];
+		sprintf_s(stroka, 100, "%f %f %f", a, b, c);
+		std::string result_strok = stroka;
+		delete[] stroka;
+		stroka = nullptr;
+		return result_strok;
+	}
+
+	static triangle triang_from_strok(std::string str) {
+		float sa, sb, sc;
+		sscanf_s(str.c_str(), "%f %f %f", &sa, &sb, &sc);
+		return triangle(sa, sb, sc);
+	}
+
 
 	void print() {
 		vivod(a, "Размер a: ");
 		vivod(b, "Размер b: ");
 		vivod(c, "Размер c: ");
+	}
+
+	~triangle() {
+		std::cout << "Объект был удален.";
 	}
 };
 
@@ -43,13 +83,21 @@ int main() {
 
 	try {
 		triangle t;
-		t.prover();
+		float area = t; 
+		vivod(area, "Площадь S: ");
 		t.print();
+
+		std::string stor_triang = t;
+		std::cout << "Треугольник в виде строки: " << stor_triang << std::endl;
+
+		triangle t2 = triangle::triang_from_strok(stor_triang);
+		std::cout << "Второй треугольник из строки. " << std::endl;
+		t2.print();
+
 	}
-	catch(const char* msg) {
+	catch (const char* msg) {
 		std::cout << msg << std::endl;
 	}
-
 
 	return 0;
 }
