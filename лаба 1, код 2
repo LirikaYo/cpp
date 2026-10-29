@@ -2,7 +2,6 @@
 #include <locale>
 #include <string>
 #include <cmath>
-#include <cstdio>
 
 template<typename example>
 void vvod(example& x, std::string s) {
@@ -37,21 +36,21 @@ public:
 	}
 
 	void prover() {
-		if (a <= 0 || b <= 0 || c <= 0) {
+		if ((a <= 0) || (b <= 0) || (c <= 0)) {
 			throw "Вы ввели не правильные числа.";
 		}
-		if (a + b <= c || a + c <= b || c + b <= a) {
+		if ((a + b <= c) || (a + c <= b) || (c + b <= a)) {
 			throw "Треугольник не может быть создан.";
 		} 
 	}
 
-	operator float() const {
+	float Area() const {
 		float p = (a + b + c) / 2;
-		float s = sqrt(p * (p - a) * (p - b) * (p - c));
-		return s;
+		float S = sqrt(p * (p - a) * (p - b) * (p - c));
+		return S;
 	}
 
-	operator std::string() const {
+	std::string strochka() const {
 		char* stroka = new char[100];
 		sprintf_s(stroka, 100, "%f %f %f", a, b, c);
 		std::string result_strok = stroka;
@@ -74,7 +73,7 @@ public:
 	}
 
 	~triangle() {
-		std::cout << "Объект был удален.";
+		std::cout << "Объект был удален." << std::endl;
 	}
 };
 
@@ -83,11 +82,11 @@ int main() {
 
 	try {
 		triangle t;
-		float area = t; 
+		float area = t.Area(); 
 		vivod(area, "Площадь S: ");
 		t.print();
 
-		std::string stor_triang = t;
+		std::string stor_triang = t.strochka();
 		std::cout << "Треугольник в виде строки: " << stor_triang << std::endl;
 
 		triangle t2 = triangle::triang_from_strok(stor_triang);
@@ -98,6 +97,7 @@ int main() {
 	catch (const char* msg) {
 		std::cout << msg << std::endl;
 	}
+
 
 	return 0;
 }
