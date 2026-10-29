@@ -1,6 +1,6 @@
 #include <iostream>
 #include <locale>
-#include <string>
+#include <string> 
 #include <cmath>
 
 template<typename example>
@@ -13,8 +13,6 @@ template<typename example>
 void vivod(example& x, std::string s) {
 	std::cout << s << x << std::endl;
 }
-
-
 
 class triangle {
 private:
@@ -41,7 +39,7 @@ public:
 		}
 		if ((a + b <= c) || (a + c <= b) || (c + b <= a)) {
 			throw "Треугольник не может быть создан.";
-		} 
+		}
 	}
 
 	float Area() const {
@@ -51,20 +49,23 @@ public:
 	}
 
 	std::string strochka() const {
-		char* stroka = new char[100];
-		sprintf_s(stroka, 100, "%f %f %f", a, b, c);
-		std::string result_strok = stroka;
-		delete[] stroka;
-		stroka = nullptr;
-		return result_strok;
+		return std::to_string(a) + " " + std::to_string(b) + " " + std::to_string(c);
 	}
 
 	static triangle triang_from_strok(std::string str) {
-		float sa, sb, sc;
-		sscanf_s(str.c_str(), "%f %f %f", &sa, &sb, &sc);
+		size_t prob1 = str.find(' ');
+		size_t prob2 = str.find(' ', prob1 + 1);
+
+		std::string s_a = str.substr(0, prob1);
+		std::string s_b = str.substr(prob1 + 1, prob2 - prob1 - 1);
+		std::string s_c = str.substr(prob2 + 1);
+
+		float sa = std::stof(s_a);
+		float sb = std::stof(s_b);
+		float sc = std::stof(s_c);
+
 		return triangle(sa, sb, sc);
 	}
-
 
 	void print() {
 		vivod(a, "Размер a: ");
@@ -82,7 +83,7 @@ int main() {
 
 	try {
 		triangle t;
-		float area = t.Area(); 
+		float area = t.Area();
 		vivod(area, "Площадь S: ");
 		t.print();
 
@@ -92,12 +93,10 @@ int main() {
 		triangle t2 = triangle::triang_from_strok(stor_triang);
 		std::cout << "Второй треугольник из строки. " << std::endl;
 		t2.print();
-
 	}
 	catch (const char* msg) {
 		std::cout << msg << std::endl;
 	}
-
 
 	return 0;
 }
