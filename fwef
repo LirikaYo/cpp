@@ -1,0 +1,124 @@
+#include <iostream>
+#include <locale>
+#include <string> 
+#include <cmath>
+#include <conio.h>
+
+template<typename example>
+void vvod(example& x, std::string s) {
+	std::cout << s;
+	std::cin >> x;
+}
+
+template<typename example>
+void vivod(example& x, std::string s) {
+	std::cout << s << x << std::endl;
+}
+
+class triangle {
+private:
+	float a = 0, b = 0, c = 0;
+public:
+	triangle() {
+		vvod(a, "Введите сторону a: ");
+		vvod(b, "Введите сторону b: ");
+		vvod(c, "Введите сторону c: ");
+		prover();
+		std::cout << "Объект создан." << std::endl;
+	}
+
+	triangle(float stor_a, float stor_b, float stor_c) {
+		a = stor_a;
+		b = stor_b;
+		c = stor_c;
+		prover();
+	}
+
+	void prover() {
+		if ((a <= 0) || (b <= 0) || (c <= 0)) {
+			throw "Вы ввели не правильные числа.";
+		}
+		if ((a + b <= c) || (a + c <= b) || (c + b <= a)) {
+			throw "Треугольник не может быть создан.";
+		}
+	}
+
+	float Area() const {
+		float p = (a + b + c) / 2;
+		float S = sqrt(p * (p - a) * (p - b) * (p - c));
+		return S;
+	}
+
+	std::string strochka() const {
+		return std::to_string(a) + " " + std::to_string(b) + " " + std::to_string(c);
+	}
+
+	static triangle triang_from_strok(std::string str) {
+		float sa = 0, sb = 0, sc = 0;
+		int pozic = 0;
+		int dlin = str.length();
+
+		while (pozic < dlin && str[pozic] == ' ') pozic++;
+		int start_A = pozic;
+		while (pozic < dlin && str[pozic] != ' ') pozic++;
+		if (start_A == pozic) {
+			throw ("Не хватает данных");
+		}
+		sa = std::stof(str.substr(start_A, pozic - start_A));
+
+		while (pozic < dlin && str[pozic] == ' ') pozic++;
+		int start_B = pozic;
+		while (pozic < dlin && str[pozic] != ' ') pozic++;
+		if (start_B == pozic) {
+			throw ("Не хватает данных");
+		}
+		sb = std::stof(str.substr(start_B, pozic - start_B));
+
+		while (pozic < dlin && str[pozic] == ' ') pozic++;
+		int start_C = pozic;
+		while (pozic < dlin && str[pozic] != ' ') pozic++;
+		if (start_C == pozic) {
+			throw ("Не хватает данных");
+		}
+		sb = std::stof(str.substr(start_C, pozic - start_C));
+
+		return triangle(sa, sb, sc);
+	}
+
+	void print() {
+		vivod(a, "Размер a: ");
+		vivod(b, "Размер b: ");
+		vivod(c, "Размер c: ");
+	}
+
+	~triangle() {
+		std::cout << "Объект был удален." << std::endl;
+	}
+};
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	try {
+		triangle t;
+		float area = t.Area();
+		vivod(area, "Площадь S: ");
+		t.print();
+
+		std::string stor_triang = t.strochka();
+		std::cout << "Треугольник в виде строки: " << stor_triang << std::endl;
+
+		triangle t2 = triangle::triang_from_strok(stor_triang);
+		std::cout << "Второй треугольник из строки. " << std::endl;
+		t2.print();
+	}
+	catch (const char* msg) {
+		std::cout << msg << std::endl;
+	}
+	catch (...) {
+		std::cout << "Неправильный формат числа." << std::endl;
+	}
+
+	_getch();
+	return 0;
+}
