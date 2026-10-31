@@ -53,19 +53,50 @@ public:
 	}
 
 	static triangle triang_from_strok(std::string str) {
-		size_t prob1 = str.find(' ');
-		size_t prob2 = str.find(' ', prob1 + 1);
+		float* sides = nullptr;  
+		int count = 0;           
+		std::string current = "";
 
-		std::string s_a = str.substr(0, prob1);
-		std::string s_b = str.substr(prob1 + 1, prob2 - prob1 - 1);
-		std::string s_c = str.substr(prob2 + 1);
+		for (int i = 0; i <= str.length(); ++i) {
+			if (i == str.length() || str[i] == ' ') {
+				if (current.length() > 0) {
+					float* temp = new float[count + 1];
 
-		float sa = std::stof(s_a);
-		float sb = std::stof(s_b);
-		float sc = std::stof(s_c);
+					for (int j = 0; j < count; ++j) {
+						temp[j] = sides[j];
+					}
+
+					temp[count] = std::stof(current);
+
+					delete[] sides;
+					sides = nullptr;
+					sides = temp;
+
+					count++;
+					current = ""; 
+				}
+			}
+			else {
+				current += str[i]; 
+			}
+		}
+
+		if (count != 3) {
+			delete[] sides;
+			sides = nullptr;
+			throw "Ошибка: В строке должно быть ровно 3 элемента!";
+		}
+
+		float sa = sides[0];
+		float sb = sides[1];
+		float sc = sides[2];
+
+		delete[] sides; 
+		sides = nullptr;
 
 		return triangle(sa, sb, sc);
 	}
+
 
 	void print() {
 		vivod(a, "Размер a: ");
