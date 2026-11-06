@@ -52,58 +52,50 @@ public:
 		return std::to_string(a) + " " + std::to_string(b) + " " + std::to_string(c);
 	}
 
-static triangle triang_from_strok(std::string str) {
-	int len = str.length();
+	static triangle triang_from_strok(std::string str) {
+		int dlin = str.length();
 
-	// --- 1. ПРОВЕРКА КОЛИЧЕСТВА ЭЛЕМЕНТОВ В САМОМ НАЧАЛЕ ---
-	int spaces = 0;
-	int check_i = 0;
+		int spaces = 0;
+		int i = 0;
 
-	// Считаем пробелы обычным индексом int
-	while (check_i < len) {
-		if (str[check_i] == ' ') {
-			spaces++;
-		}
-		check_i++;
-	}
-
-	// Если пробелов не 2 (чисел вошло не 3) — сразу жесткий стоп
-	if (spaces != 2) {
-		throw "Ошибка: В строке должно быть ровно 3 элемента!";
-	}
-
-	// --- 2. ДАЛЬШЕ ВЫПОЛНЯЕМ НАШИ ДЕЙСТВИЯ (Разрезаем строку через int индексы) ---
-	int pos1 = -1;
-	int pos2 = -1;
-	int i = 0;
-
-	// Находим точные координаты первого и второго пробела
-	while (i < len) {
-		if (str[i] == ' ') {
-			if (pos1 == -1) {
-				pos1 = i; // Нашли первый пробел
+		while (i < dlin) {
+			if (i == ' ') {
+				spaces++;
 			}
-			else if (pos2 == -1) {
-				pos2 = i; // Нашли второй пробел
-				break;    // Оба пробела найдены, дальше цикл крутить не нужно
-			}
+			i++;
 		}
-		i++;
+
+		if (spaces != 2) {
+			throw "Ошибка: В строке должно быть ровно 3 элемента!";
+		}
+
+		int pos1 = -1;
+		int pos2 = -1;
+		int i = 0;
+
+		while (i < dlin) {
+			if (str[i] == ' ') {
+				if (pos1 == -1) {
+					pos1 = i; 
+				}
+				else {
+					pos2 = i; 
+					break;    
+				}
+			}
+			i++;
+		}
+
+		std::string s1 = str.substr(0, pos1);               
+		std::string s2 = str.substr(pos1 + 1, pos2 - pos1 - 1);
+		std::string s3 = str.substr(pos2 + 1);               
+
+		float sa = std::stof(s1);
+		float sb = std::stof(s2);
+		float sc = std::stof(s3);
+
+		return triangle(sa, sb, sc);
 	}
-
-	// Вырезаем куски текста, зная их точные int-координаты
-	std::string s1 = str.substr(0, pos1);               // От начала до 1-го пробела
-	std::string s2 = str.substr(pos1 + 1, pos2 - pos1 - 1); // Между 1-м и 2-м пробелом
-	std::string s3 = str.substr(pos2 + 1);               // От 2-го пробела до конца строки
-
-	// Переводим текст в нормальные float числа
-	float sa = std::stof(s1);
-	float sb = std::stof(s2);
-	float sc = std::stof(s3);
-
-	// Возвращаем готовый треугольник
-	return triangle(sa, sb, sc);
-}
 
 
 	void print() {
