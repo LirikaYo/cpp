@@ -2,7 +2,6 @@
 #include <locale>
 #include <string> 
 #include <cmath>
-#include <conio.h>
 
 template<typename example>
 void vvod(example& x, std::string s) {
@@ -54,36 +53,57 @@ public:
 	}
 
 	static triangle triang_from_strok(std::string str) {
-		float sa = 0, sb = 0, sc = 0;
-		int pozic = 0;
-		int dlin = str.length();
+		float* sides = nullptr;
+		int count = 0;
+		std::string current = "";
 
-		while (pozic < dlin && str[pozic] == ' ') pozic++;
-		int start_A = pozic;
-		while (pozic < dlin && str[pozic] != ' ') pozic++;
-		if (start_A == pozic) {
-			throw ("Не хватает данных");
-		}
-		sa = std::stof(str.substr(start_A, pozic - start_A));
+		int i = 0;
+		int dlin = str.lenght();
 
-		while (pozic < dlin && str[pozic] == ' ') pozic++;
-		int start_B = pozic;
-		while (pozic < dlin && str[pozic] != ' ') pozic++;
-		if (start_B == pozic) {
-			throw ("Не хватает данных");
-		}
-		sb = std::stof(str.substr(start_B, pozic - start_B));
+		while (i < dlin || current.lenght() > 0) {
+			if (i >= dlin || str[i] == ' ') {
+				if (current.length() > 0) {
+					float* temp = new float[count + 1];
 
-		while (pozic < dlin && str[pozic] == ' ') pozic++;
-		int start_C = pozic;
-		while (pozic < dlin && str[pozic] != ' ') pozic++;
-		if (start_C == pozic) {
-			throw ("Не хватает данных");
+					for (int j = 0; j < count; ++j) {
+						temp[j] = sides[j];
+					}
+
+					temp[count] = std::stof(current);
+
+					delete[] sides;
+					sides = nullptr;
+					sides = temp;
+
+					count++;
+					current = "";
+				}
+				if (i < dlin) {
+					i++;
+				}
+			}
+			else {
+				current += str[i];
+				i++;
+			}
 		}
-		sb = std::stof(str.substr(start_C, pozic - start_C));
+
+		if (count != 3) {
+			delete[] sides;
+			sides = nullptr;
+			throw "Ошибка: В строке должно быть ровно 3 элемента!";
+		}
+
+		float sa = sides[0];
+		float sb = sides[1];
+		float sc = sides[2];
+
+		delete[] sides;
+		sides = nullptr;
 
 		return triangle(sa, sb, sc);
 	}
+
 
 	void print() {
 		vivod(a, "Размер a: ");
@@ -115,10 +135,6 @@ int main() {
 	catch (const char* msg) {
 		std::cout << msg << std::endl;
 	}
-	catch (...) {
-		std::cout << "Неправильный формат числа." << std::endl;
-	}
 
-	_getch();
 	return 0;
 }
