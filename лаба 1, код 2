@@ -53,46 +53,46 @@ public:
 	}
 
 	static triangle triang_from_strok(std::string str) {
-		float* sides = nullptr;  
-		int count = 0;           
-		std::string current = "";
+		int dlin = str.length();
 
-		for (int i = 0; i <= str.length(); ++i) {
-			if (i == str.length() || str[i] == ' ') {
-				if (current.length() > 0) {
-					float* temp = new float[count + 1];
+		int spaces = 0;
+		int i = 0;
 
-					for (int j = 0; j < count; ++j) {
-						temp[j] = sides[j];
-					}
-
-					temp[count] = std::stof(current);
-
-					delete[] sides;
-					sides = nullptr;
-					sides = temp;
-
-					count++;
-					current = ""; 
-				}
+		while (i < dlin) {
+			if (str[i] == ' ') {
+				spaces++;
 			}
-			else {
-				current += str[i]; 
-			}
+			i++;
 		}
 
-		if (count != 3) {
-			delete[] sides;
-			sides = nullptr;
+		if (spaces != 2) {
 			throw "Ошибка: В строке должно быть ровно 3 элемента!";
 		}
 
-		float sa = sides[0];
-		float sb = sides[1];
-		float sc = sides[2];
+		int pos1 = -1;
+		int pos2 = -1;
+		i = 0;
 
-		delete[] sides; 
-		sides = nullptr;
+		while (i < dlin) {
+			if (str[i] == ' ') {
+				if (pos1 == -1) {
+					pos1 = i;
+				}
+				else {
+					pos2 = i;
+					break;
+				}
+			}
+			i++;
+		}
+
+		std::string s1 = str.substr(0, pos1);
+		std::string s2 = str.substr(pos1 + 1, pos2 - pos1 - 1);
+		std::string s3 = str.substr(pos2 + 1);
+
+		float sa = std::stof(s1);
+		float sb = std::stof(s2);
+		float sc = std::stof(s3);
 
 		return triangle(sa, sb, sc);
 	}
