@@ -1,0 +1,155 @@
+#include <iostream>
+#include <string>
+#include <locale>
+
+template<typename example>
+void vvod(example& x, std::string s) {
+	std::cout << s;
+	std::cin >> x;
+}
+
+class televisor {
+private:
+	int sost = 0;
+	int canal = 0;
+public:
+	void sostyan(int newSost) {
+		if (newSost == 1) {
+			sost = 1;
+			std::cout << "Телевизор включен." << std::endl;
+		}
+		else if (newSost == 0) {
+			sost = 0;
+			std::cout << "Телевизор выключен." << std::endl;
+		}
+		else {
+			std::cout << "Выбрано неправильное значение." << std::endl;
+		}
+	}
+
+	void chanel(int newChanel) {
+		if (sost == 1) {
+			switch (newChanel) {
+			case 1: {
+				std::cout << "Выбран канал 1." << std::endl;
+				canal = 1;
+				break;
+			}
+			case 2: {
+				std::cout << "Выбран канал 2." << std::endl;
+				canal = 2;
+				break;
+			}
+			case 3: {
+				std::cout << "Выбран канал 3." << std::endl;
+				canal = 3;
+				break;
+			}
+			case 4: {
+				std::cout << "Выбран канал 4." << std::endl;
+				canal = 4;
+				break;
+			}
+			case 5: {
+				std::cout << "Выбран канал 5." << std::endl;
+				canal = 5;
+				break;
+			}
+			default: {
+				std::cout << "Выбран не правильный канал." << std::endl;
+				break;
+			}
+			}
+		}
+		else {
+			std::cout << "Телевизор выключен." << std::endl;
+		}
+	}
+
+	void nextchanel() {
+		if (sost == 1) {
+			if (canal >= 5) {
+				canal = 1;
+			}
+			else {
+				canal++;
+			}
+			std::cout << "Следующий канал." << std::endl;
+			std::cout << "Сейчас показывается канал: " << canal << std::endl;
+		}
+		else {
+			std::cout << "Телевизор выключен." << std::endl;
+		}
+	}
+
+	void proshchanel() {
+		if (sost == 1) {
+			if (canal <= 1) {
+				canal = 5;
+			}
+			else {
+				canal--;
+			}
+			std::cout << "Предыдущий канал." << std::endl;
+			std::cout << "Сейчас показывается канал: " << canal << std::endl;
+		}
+		else {
+			std::cout << "Телевизор выключен." << std::endl;
+		}
+	}
+};
+
+class pult : public televisor {
+private:
+public:
+	void vibor() {
+		int Menu; 
+		do {
+			std::cout << "1. Питание." << std::endl;
+			std::cout << "2. Выбор канала." << std::endl;
+			std::cout << "3. Следующий." << std::endl;
+			std::cout << "4. Предыдущий." << std::endl;
+			std::cout << "0. Завершение работы." << std::endl;
+			vvod(Menu, "Ваш выбор: "); 
+			switch (Menu) {
+			case 1: {
+				int sotoyan;
+				vvod(sotoyan, "Включить или выключить телевизор(1 или 0): ");
+				sostyan(sotoyan);
+				break;
+			}
+			case 2: {
+				int chan;
+				vvod(chan, "Выберите какой канал хотите включить: ");
+				chanel(chan);
+				break;
+			}
+			case 3: {
+				nextchanel();
+				break;
+			}
+			case 4: {
+				proshchanel();
+				break;
+			}
+			case 0: {
+				std::cout << "Выключение телевизора." << std::endl;
+				break;
+			}
+			default: {
+				std::cout << "Не правильный выбор..." << std::endl;
+				break; 
+			}
+			}
+		} while (Menu != 0); 
+	} 
+};
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	pult myPult;
+	myPult.vibor();
+
+	return 0;
+}
