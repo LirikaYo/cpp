@@ -8,7 +8,7 @@ void vvod(example& x, std::string s) {
 	std::cin >> x;
 }
 
-class televisor {
+class Televisor {
 private:
 	int sost = 0;
 	int canal = 0;
@@ -99,8 +99,9 @@ public:
 	}
 };
 
-class pult : public televisor {
+class Pult {
 private:
+	Televisor tv;
 public:
 	void vibor() {
 		int Menu; 
@@ -115,21 +116,21 @@ public:
 			case 1: {
 				int sotoyan;
 				vvod(sotoyan, "Включить или выключить телевизор(1 или 0): ");
-				sostyan(sotoyan);
+				tv.sostyan(sotoyan);
 				break;
 			}
 			case 2: {
 				int chan;
 				vvod(chan, "Выберите какой канал хотите включить: ");
-				chanel(chan);
+				tv.chanel(chan);
 				break;
 			}
 			case 3: {
-				nextchanel();
+				tv.nextchanel();
 				break;
 			}
 			case 4: {
-				proshchanel();
+				tv.proshchanel();
 				break;
 			}
 			case 0: {
@@ -148,7 +149,7 @@ public:
 int main() {
 	setlocale(LC_ALL, "RU");
 
-	pult myPult;
+	Pult myPult;
 	myPult.vibor();
 
 	return 0;
